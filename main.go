@@ -182,4 +182,3 @@ func positionsFromNode(node *xmlquery.Node) (start, end int, err error) {
 	}
 	return
 }
-
