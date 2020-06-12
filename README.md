@@ -1,6 +1,6 @@
 # astpath
 
-Quick hack that provides XPath querying over Go ASTs. Inspired by [astpath](https://github.com/hchasestevens/astpath)
+Quick hack that provides XPath querying over Go ASTs. Inspired by [hchasestevens/astpath](https://github.com/hchasestevens/astpath)
 for Python.
 
 ## Installing
