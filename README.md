@@ -194,24 +194,32 @@ $ astpath --print-mode="xml-inner" '/' test.go | xmllint --format -
 Extract import paths:
 
 ```
-$ astpath '//ImportSpec/BasicLit' test.go 
-test/test.go:4:2 > "log"
-test/test.go:5:2 > "strings"
+$ astpath '//ImportSpec' test.go
+test.go:4:2 > "log"
+test.go:5:2 > "strings"
+```
+
+... or
+
+```
+$ astpath --print-mode="xml-inner" '//ImportSpec/BasicLit/@value' test.go
+log
+strings
 ```
 
 Locate `log.*` function calls:
 
 ```
-$ astpath '//CallExpr/SelectorExpr[./Ident[1]/Name="log"]' test.go     
-test/test.go:10:3 > log.Println
-test/test.go:13:2 > log.Printf
+$ astpath '//CallExpr/SelectorExpr[./Ident[1]/Name="log"]' test.go
+test.go:10:3 > log.Println
+test.go:13:2 > log.Printf
 ```
 
 Locate `log.Printf` function calls:
 
 ```
 $ astpath '//CallExpr/SelectorExpr[./Ident[1]/Name="log"][./Ident[2]/Name="Printf"]' test.go
-test/test.go:13:2 > log.Printf
+test.go:13:2 > log.Printf
 ```
 
 
