@@ -42,7 +42,7 @@ func repeatConditional(str string, count int, fn func(string) bool) string {
 To view the raw XML output for a single file:
 
 ```
-$ astpath --print-mode="xml-inner" '/' test.go | xmllint --format -
+$ astpath --template='{{.XML}}' '/File' test/test.go | xmllint --format - | xmllint --format -
 ```
 
 ```xml    
@@ -202,7 +202,7 @@ test.go:5:2 > "strings"
 ... or
 
 ```
-$ astpath --print-mode="xml-inner" '//ImportSpec/BasicLit/@value' test.go
+$ astpath --template='{{.XMLInner}}' '//ImportSpec/BasicLit/@value' test.go
 log
 strings
 ```
