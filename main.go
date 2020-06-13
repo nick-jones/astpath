@@ -20,7 +20,7 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:  "template",
-				Value: "{{.Filename}}:{{.Line}}:{{.Column}} > {{.Value}}",
+				Value: "{{.Filename}}:{{.Line}}:{{.Column}} > {{.Source}}",
 				Usage: "text/template format",
 			},
 		},

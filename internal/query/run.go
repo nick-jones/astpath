@@ -18,10 +18,10 @@ import (
 )
 
 type Result struct {
-	XML      string
-	XMLInner string
-	Value    string
-	Source   string
+	XML       string
+	XMLInner  string
+	Source    string
+	LineValue string
 	token.Position
 }
 
@@ -108,13 +108,13 @@ func buildResult(node *xmlquery.Node, r io.ReaderAt, fset *token.FileSet) (Resul
 		if err != nil {
 			return Result{}, err
 		}
-		res.Source = string(line)
+		res.LineValue = string(line)
 
 		val := make([]byte, end-start)
 		if _, err := r.ReadAt(val, int64(start-1)); err != nil {
 			return Result{}, err
 		}
-		res.Value = string(val)
+		res.Source = string(val)
 	}
 
 	return res, nil
