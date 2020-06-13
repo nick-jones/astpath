@@ -45,7 +45,7 @@ func evaluateFile(path string, expr *xpath.Expr) ([]Result, error) {
 	defer f.Close()
 
 	fset := token.NewFileSet()
-	src, err := parser.ParseFile(fset, path, f, 0)
+	src, err := parser.ParseFile(fset, path, f, parser.ParseComments)
 	if err != nil {
 		return nil, err
 	}

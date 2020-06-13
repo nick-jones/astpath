@@ -32,7 +32,7 @@ type AST struct {
 
 type Comment struct {
 	XMLName xml.Name `xml:"Comment"`
-	Text    string
+	Text    string   `xml:"text,attr"`
 	BaseNode
 }
 
