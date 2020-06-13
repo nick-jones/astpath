@@ -58,7 +58,7 @@ type BadExpr struct {
 
 type Ident struct {
 	XMLName xml.Name `xml:"Ident"`
-	Name    string
+	Name    string   `xml:"name,attr"`
 	Object  *Object
 	BaseNode
 }
