@@ -25,7 +25,12 @@ type Result struct {
 	token.Position
 }
 
-func Run(paths []string, expr *xpath.Expr) ([]Result, error) {
+func Run(paths []string, query string) ([]Result, error) {
+	expr, err := xpath.Compile(query)
+	if err != nil {
+		return nil, err
+	}
+
 	results := make([]Result, 0)
 	for _, path := range paths {
 		res, err := evaluateFile(path, expr)

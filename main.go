@@ -8,7 +8,6 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/antchfx/xpath"
 	"github.com/urfave/cli/v2"
 
 	"github.com/nick-jones/astpath/internal/query"
@@ -33,17 +32,12 @@ func main() {
 }
 
 func run(c *cli.Context) error {
-	xp, root := c.Args().Get(0), c.Args().Get(1)
-	if xp == "" {
+	expr, root := c.Args().Get(0), c.Args().Get(1)
+	if expr == "" {
 		return fmt.Errorf("xpath must be provided")
 	}
 	if root == "" {
 		root = "."
-	}
-
-	expr, err := xpath.Compile(xp)
-	if err != nil {
-		return err
 	}
 
 	tmpl, err := template.New("format").Parse(c.String("template"))
