@@ -50,7 +50,7 @@ func run(c *cli.Context) error {
 		return err
 	}
 
-	results, err := query.Run(paths, expr)
+	results, err := query.FindAll(paths, expr)
 	if err != nil {
 		return err
 	}

@@ -25,7 +25,7 @@ type Result struct {
 	token.Position
 }
 
-func Run(paths []string, query string) ([]Result, error) {
+func FindAll(paths []string, query string) ([]Result, error) {
 	expr, err := xpath.Compile(query)
 	if err != nil {
 		return nil, err
