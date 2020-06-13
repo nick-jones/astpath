@@ -10,7 +10,7 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/nick-jones/astpath/internal/query"
+	"github.com/nick-jones/astpath/pkg/query"
 )
 
 func main() {
