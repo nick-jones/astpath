@@ -32,12 +32,17 @@ func main() {
 }
 
 func run(c *cli.Context) error {
-	expr, root := c.Args().Get(0), c.Args().Get(1)
-	if expr == "" {
+	xpath, root := c.Args().Get(0), c.Args().Get(1)
+	if xpath == "" {
 		return fmt.Errorf("xpath must be provided")
 	}
 	if root == "" {
 		root = "."
+	}
+
+	expr, err := query.Compile(xpath)
+	if err != nil {
+		return fmt.Errorf("invalid query: %w", err)
 	}
 
 	tmpl, err := template.New("format").Parse(c.String("template"))
@@ -50,9 +55,13 @@ func run(c *cli.Context) error {
 		return err
 	}
 
-	results, err := query.FindAll(paths, expr)
-	if err != nil {
-		return err
+	results := make([]query.Result, 0)
+	for _, path := range paths {
+		res, err := queryFile(path, expr)
+		if err != nil {
+			return err
+		}
+		results = append(results, res...)
 	}
 
 	for _, res := range results {
@@ -65,7 +74,7 @@ func run(c *cli.Context) error {
 	return nil
 }
 
-func findFiles(root string) (files []string, err error) {
+func findFiles(root string) (paths []string, err error) {
 	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -75,9 +84,19 @@ func findFiles(root string) (files []string, err error) {
 			return nil
 		}
 
-		files = append(files, path)
+		paths = append(paths, path)
 
 		return nil
 	})
 	return
+}
+
+func queryFile(path string, expr *query.Expr) ([]query.Result, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	return query.FindAll(f, path, expr)
 }

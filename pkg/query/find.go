@@ -7,12 +7,9 @@ import (
 	"go/parser"
 	"go/token"
 	"io"
-	"os"
 	"strconv"
 
 	"github.com/antchfx/xmlquery"
-	"github.com/antchfx/xpath"
-
 	"github.com/nick-jones/astpath/internal/readutil"
 	"github.com/nick-jones/astpath/pkg/astxml"
 )
@@ -25,32 +22,10 @@ type Result struct {
 	token.Position
 }
 
-func FindAll(paths []string, query string) ([]Result, error) {
-	expr, err := xpath.Compile(query)
-	if err != nil {
-		return nil, err
-	}
-
-	results := make([]Result, 0)
-	for _, path := range paths {
-		res, err := evaluateFile(path, expr)
-		if err != nil {
-			return nil, err
-		}
-		results = append(results, res...)
-	}
-	return results, nil
-}
-
-func evaluateFile(path string, expr *xpath.Expr) ([]Result, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
+// FindAll searches for all instances of the supplied expression
+func FindAll(r io.ReaderAt, filename string, expr *Expr) ([]Result, error) {
 	fset := token.NewFileSet()
-	src, err := parser.ParseFile(fset, path, f, parser.ParseComments)
+	src, err := parser.ParseFile(fset, filename, r, parser.ParseComments)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +43,7 @@ func evaluateFile(path string, expr *xpath.Expr) ([]Result, error) {
 	nodes := xmlquery.QuerySelectorAll(doc, expr)
 	results := make([]Result, len(nodes))
 	for i, node := range nodes {
-		res, err := buildResult(node, f, fset)
+		res, err := buildResult(node, r, fset)
 		if err != nil {
 			return nil, err
 		}
