@@ -42,7 +42,7 @@ func repeatConditional(str string, count int, fn func(string) bool) string {
 To view the raw XML output for a single file:
 
 ```
-$ astpath --template='{{.XML}}' '/File' test/test.go | xmllint --format - | xmllint --format -
+$ astpath --template='{{.XML}}' '/File' test.go | xmllint --format - | xmllint --format -
 ```
 
 ```xml    
