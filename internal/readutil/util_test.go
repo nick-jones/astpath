@@ -69,9 +69,9 @@ func TestReadLine(t *testing.T) {
 			expectedLine: []byte("hello world"),
 		},
 		{
-			name:         "second line, beyond last offset",
-			bytes:        []byte("foo bar baz\nhello world"),
-			offset:       23,
+			name:        "second line, beyond last offset",
+			bytes:       []byte("foo bar baz\nhello world"),
+			offset:      23,
 			expectedErr: io.EOF,
 		},
 	}
