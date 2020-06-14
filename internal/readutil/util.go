@@ -5,7 +5,8 @@ import (
 	"io"
 )
 
-// ReadLine reads a full line from an arbitrary position.. surely there is an easier way to achieve this?
+// ReadLine reads a full line from an arbitrary position. If the offset is a newline character the line preceding that
+// character will be returned. Surely there is an easier way to achieve this?
 func ReadLine(r io.ReaderAt, offset int64) ([]byte, error) {
 	char := make([]byte, 1)
 
@@ -13,7 +14,7 @@ func ReadLine(r io.ReaderAt, offset int64) ([]byte, error) {
 	end := make([]byte, 0)
 	for i := int64(0); ; i++ {
 		if _, err := r.ReadAt(char, offset+i); err != nil {
-			if errors.Is(err, io.EOF) {
+			if i > 0 && errors.Is(err, io.EOF) {
 				break
 			}
 			return nil, err
@@ -26,8 +27,8 @@ func ReadLine(r io.ReaderAt, offset int64) ([]byte, error) {
 
 	// read backwards from the position until hitting a newline
 	start := make([]byte, 0)
-	for i := int64(1); offset-i >= 0; i++ {
-		if _, err := r.ReadAt(char, offset-i); err != nil {
+	for off := offset - 1; off >= 0; off-- {
+		if _, err := r.ReadAt(char, off); err != nil {
 			return nil, err
 		}
 		if char[0] == '\n' {
