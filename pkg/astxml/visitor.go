@@ -7,7 +7,6 @@ import (
 )
 
 type visitor struct {
-	node   Node
 	parent Node
 }
 
@@ -15,7 +14,6 @@ func (v *visitor) Visit(n ast.Node) ast.Visitor {
 	var xn Node
 	if n != nil {
 		xn = mapNode(n)
-		v.node = xn
 		v.parent.AddChild(xn)
 	} else {
 		xn = v.parent
