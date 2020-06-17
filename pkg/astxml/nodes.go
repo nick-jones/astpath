@@ -25,11 +25,6 @@ func (bn *BaseNode) SetPosition(start, end token.Pos) {
 	bn.PosEnd = end
 }
 
-type AST struct {
-	XMLName xml.Name `xml:"AST"`
-	BaseNode
-}
-
 type Comment struct {
 	XMLName xml.Name `xml:"Comment"`
 	Text    string   `xml:"text,attr"`

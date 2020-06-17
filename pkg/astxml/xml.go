@@ -23,7 +23,7 @@ func MarshalIndent(n ast.Node, prefix, indent string) ([]byte, error) {
 }
 
 func convertNode(n ast.Node) (Node, error) {
-	root := &AST{}
+	root := &BaseNode{}
 	ast.Walk(&visitor{parent: root}, n)
 
 	if len(root.Children) != 1 {
